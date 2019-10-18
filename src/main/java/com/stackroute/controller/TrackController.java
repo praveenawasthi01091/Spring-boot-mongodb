@@ -31,7 +31,14 @@ public class TrackController {
     @PostMapping("/track")
     public ResponseEntity<?> saveTrack(@RequestBody Track track) throws TrackAlreadyExistsException {
        // trackService.saveTrack(track);
-        return new ResponseEntity<Track>(trackService.saveTrack(track), HttpStatus.CREATED);
+        try {
+            return new ResponseEntity<Track>(trackService.saveTrack(track), HttpStatus.CREATED);
+        }
+        catch (TrackAlreadyExistsException e)
+        {
+            System.out.println("inside Message method");
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+        }
     }
 
     /*  Show all resources */
